@@ -13,3 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group([
+    'namespace' => 'API',
+], function() {
+    Route::apiResource('fields', 'FieldController');
+});
