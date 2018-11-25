@@ -24,7 +24,10 @@ class FieldsTableSeeder extends Seeder
                 'type' => 'string',
             ], [
                 'meta' => json_encode([
-                    'subTypes' => ['email'],
+                    'validations' => [
+                        'email',
+                        'unique',
+                    ],
                 ]),
                 'name' => 'email_address',
                 'protected' => 1,
@@ -57,7 +60,7 @@ class FieldsTableSeeder extends Seeder
         ];
 
         foreach ($defaultFields as $fieldData) {
-            Field::firstOrCreate([
+            Field::updateOrCreate([
                 'name' => $fieldData['name'],
             ], $fieldData);
         }
