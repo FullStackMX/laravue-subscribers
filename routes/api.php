@@ -17,4 +17,5 @@ Route::group([
     'namespace' => 'API',
 ], function() {
     Route::apiResource('fields', 'FieldController');
+    Route::apiResource('subscribers', 'SubscriberController');
 });
