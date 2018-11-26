@@ -32,15 +32,14 @@ class SubscriberController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        //$subscriber = Subscriber::create();
-        $subscriber = Subscriber::find(1);
+        $subscriber = Subscriber::create();
 
         foreach ($request->get('fields') as $fieldData) {
             SubscriberField::updateOrCreate([
-                'field_id' => $fieldData['field_id'],
+                'field_id' => $fieldData['id'],
                 'subscriber_id' => $subscriber->id,
             ], [
-                'value' => $fieldData['value'],
+                'value' => $fieldData['pivot']['value'],
             ]);
         }
 
@@ -73,10 +72,10 @@ class SubscriberController extends Controller
     {
         foreach ($request->get('fields') as $fieldData) {
             SubscriberField::updateOrCreate([
-                'field_id' => $fieldData['field_id'],
+                'field_id' => $fieldData['id'],
                 'subscriber_id' => $subscriber->id,
             ], [
-                'value' => $fieldData['value'],
+                'value' => $fieldData['pivot']['value'],
             ]);
         }
 

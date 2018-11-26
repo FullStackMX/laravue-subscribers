@@ -28,18 +28,18 @@ abstract class BaseRequest extends FormRequest
         foreach ($this->request->get('fields') as $index => $fieldData) {
             $keyPrefix = "fields.{$index}";
 
-            $validationRules["{$keyPrefix}.field_id"] = [
+            $validationRules["{$keyPrefix}.id"] = [
                 'required',
                 'integer',
                 'exists:fields,id',
             ];
 
-            $field = Field::find($fieldData['field_id']);
+            $field = Field::find($fieldData['id']);
             if (!$field) {
                 continue;
             }
 
-            $validationRules["{$keyPrefix}.value"] = array_merge(
+            $validationRules["{$keyPrefix}.pivot.value"] = array_merge(
                 $this->buildRulesForType($field),
                 $this->buildCustomRules($field)
             );
@@ -120,7 +120,7 @@ abstract class BaseRequest extends FormRequest
                 case 'unique':
                     $temporalRule = Rule::unique('subscriber_fields', 'value')
                         ->where(function ($query) use ($field) {
-                            return $query->where('field_id', $field->id);
+                            return $query->where('id', $field->id);
                         });
                     if (!empty($this->subscriber)) {
                         $temporalRule = $temporalRule->ignore($this->subscriber->id, 'subscriber_id');
