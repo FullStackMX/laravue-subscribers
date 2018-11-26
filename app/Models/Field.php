@@ -10,6 +10,15 @@ class Field extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'meta' => 'object',
+    ];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -35,6 +44,16 @@ class Field extends Model
     ];
 
     /**
+     * Mutator for meta.
+     *
+     * @param mixed $value
+     */
+    public function setMetaAttribute($value)
+    {
+        $this->attributes['meta'] = is_string($value) ? $value : json_encode($value);
+    }
+
+    /**
      * Scope a query to filter by required flag.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -56,5 +75,20 @@ class Field extends Model
     public function scopeProtected($query, int $protected = 1)
     {
         return $query->where('protected', $protected);
+    }
+
+    /**
+     * The subscribers that belong to the role.
+     */
+    public function subscribers()
+    {
+        return $this->belongsToMany(Subscriber::class, 'subscriber_fields')
+            ->using(SubscriberField::class)
+            ->withPivot(
+                'created_at',
+                'deleted_at',
+                'updated_at',
+                'value'
+            );
     }
 }

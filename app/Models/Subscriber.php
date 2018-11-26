@@ -19,4 +19,19 @@ class Subscriber extends Model
         'deleted_at',
         'updated_at',
     ];
+
+    /**
+     * The fields that belong to the role.
+     */
+    public function fields()
+    {
+        return $this->belongsToMany(Field::class, 'subscriber_fields')
+            ->using(SubscriberField::class)
+            ->withPivot(
+                'created_at',
+                'deleted_at',
+                'updated_at',
+                'value'
+            );
+    }
 }

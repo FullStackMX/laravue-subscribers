@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SubscriberField extends Model
+class SubscriberField extends Pivot
 {
     use SoftDeletes;
 
@@ -32,6 +32,13 @@ class SubscriberField extends Model
     ];
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'subscriber_fields';
+
+    /**
      * Scope a query to filter with value defined.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -40,5 +47,21 @@ class SubscriberField extends Model
     public function scopeWithValue($query)
     {
         return $query->whereNotNull('value');
+    }
+
+    /**
+     * Get the field that owns the data.
+     */
+    public function field()
+    {
+        return $this->belongsTo(Field::class);
+    }
+
+    /**
+     * Get the subscriber that owns the data.
+     */
+    public function subscriber()
+    {
+        return $this->belongsTo(Subscriber::class);
     }
 }
