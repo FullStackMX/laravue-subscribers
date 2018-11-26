@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'meta' => 'nullable|json',
-            'name' => 'required|string|min:3|max:50|unique:fields,name,' . $this->field->id,
+            'name' => 'required|alpha_dash|min:3|max:50|unique:fields,name,' . $this->field->id,
             'protected' => 'required|boolean',
             'required' => 'required|boolean',
             'title' => 'required|string|min:3|max:250',
