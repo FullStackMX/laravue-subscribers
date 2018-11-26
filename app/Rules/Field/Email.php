@@ -17,7 +17,7 @@ class Email implements Rule
     {
         $domain = substr(strrchr($value, "@"), 1);
 
-        return checkdnsrr($domain);
+        return checkdnsrr($domain, 'ANY');
     }
 
     /**
